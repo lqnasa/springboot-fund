@@ -38,7 +38,7 @@ public class THolderNumLatestSpider implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(THolderNumLatestSpider.class);
 
-    private static final String HOLDER_NUM_LATEST_URL = "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?st=NoticeDate&sr=-1&ps=50&p=%s&type=HOLDERNUMLATEST&sty=list&js={\"pages\":(tp),\"data\":(x)}&token=70f12f2f4f091e459a279469fe49eca5&filter=(HolderNumChangeRate<-20)(RangeChangeRate=)";
+    private static final String HOLDER_NUM_LATEST_URL = "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?st=NoticeDate&sr=-1&ps=50&p=%s&type=HOLDERNUMLATEST&sty=list&js={\"pages\":(tp),\"data\":(x)}&token=70f12f2f4f091e459a279469fe49eca5&filter=(HolderNumChangeRate<-10)(RangeChangeRate=)";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36";
     private static final String REFERRER_URL = "http://data.eastmoney.com/";
 
