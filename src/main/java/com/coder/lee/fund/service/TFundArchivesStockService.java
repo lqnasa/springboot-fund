@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author coderLee23
  */
-public interface TFundArchivesStockEntityService {
+public interface TFundArchivesStockService {
 
     /**
      * 保存

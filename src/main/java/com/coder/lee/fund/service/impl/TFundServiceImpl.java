@@ -1,8 +1,8 @@
 package com.coder.lee.fund.service.impl;
 
 import com.coder.lee.fund.entity.TFundEntity;
-import com.coder.lee.fund.repository.TFundEntityRepository;
-import com.coder.lee.fund.service.TFundEntityService;
+import com.coder.lee.fund.repository.TFundRepository;
+import com.coder.lee.fund.service.TFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +15,18 @@ import org.springframework.stereotype.Service;
  * @author coderLee23
  */
 @Service
-public class TFundEntityServiceImpl implements TFundEntityService {
+public class TFundServiceImpl implements TFundService {
 
     @Autowired
-    private TFundEntityRepository tFundEntityRepository;
+    private TFundRepository tFundRepository;
 
     @Override
     public void saveFund(TFundEntity tFundEntity) {
-        tFundEntityRepository.save(tFundEntity);
+        tFundRepository.save(tFundEntity);
     }
 
     @Override
     public TFundEntity findByFundCode(String fundCode) {
-        return tFundEntityRepository.findTFundEntityByFundCode(fundCode);
+        return tFundRepository.findTFundEntityByFundCode(fundCode);
     }
 }

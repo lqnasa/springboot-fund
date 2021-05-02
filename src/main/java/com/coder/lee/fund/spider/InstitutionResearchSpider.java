@@ -11,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -31,8 +28,8 @@ import java.util.stream.Collectors;
  *
  * @author coderLee23
  */
-@Order(1001)
-@Component
+//@Order(1001)
+//@Component
 public class InstitutionResearchSpider implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InstitutionResearchSpider.class);

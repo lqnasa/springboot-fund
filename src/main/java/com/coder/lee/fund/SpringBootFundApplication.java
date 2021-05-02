@@ -2,6 +2,7 @@ package com.coder.lee.fund;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRestClientAutoConfiguration;
 
 /**
  * Description: SpringbootFund
@@ -11,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author coderLee23
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = {ReactiveElasticsearchRestClientAutoConfiguration.class})
 public class SpringBootFundApplication {
 
     public static void main(String[] args) {

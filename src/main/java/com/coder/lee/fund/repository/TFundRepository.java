@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * @author coderLee23
  */
 @Repository
-public interface TFundEntityRepository extends JpaRepository<TFundEntity, Integer> {
+public interface TFundRepository extends JpaRepository<TFundEntity, Integer> {
 
     /**
      * 根据fundCode查找

@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author coderLee23
  */
 @Repository
-public interface TFundArchivesStockEntityRepository extends JpaRepository<TFundArchivesStockEntity, Integer> {
+public interface TFundArchivesStockRepository extends JpaRepository<TFundArchivesStockEntity, Integer> {
 
 }

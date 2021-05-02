@@ -2,7 +2,7 @@ management:
   port: 54001  // 指定监听端口，不指定则语server端口一直
   health:
     db:
-      enabled: true
+      enabled: false
     mail:
       enabled: true
   security:

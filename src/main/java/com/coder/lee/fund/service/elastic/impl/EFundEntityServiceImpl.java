@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  *
  * @author coderLee23
  */
+@Service
 public class EFundEntityServiceImpl implements EFundEntityService {
 
     @Autowired

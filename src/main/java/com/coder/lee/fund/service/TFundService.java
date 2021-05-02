@@ -10,7 +10,7 @@ import com.coder.lee.fund.entity.TFundEntity;
  *
  * @author coderLee23
  */
-public interface TFundEntityService {
+public interface TFundService {
 
     /**
      * 保存

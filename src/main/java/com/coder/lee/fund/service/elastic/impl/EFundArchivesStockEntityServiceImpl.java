@@ -16,6 +16,7 @@ import java.util.List;
  *
  * @author coderLee23
  */
+@Service
 public class EFundArchivesStockEntityServiceImpl implements EFundArchivesStockEntityService {
 
     @Autowired

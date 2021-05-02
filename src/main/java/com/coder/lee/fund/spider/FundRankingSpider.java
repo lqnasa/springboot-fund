@@ -2,18 +2,13 @@ package com.coder.lee.fund.spider;
 
 import com.coder.lee.fund.entity.TFundArchivesStockEntity;
 import com.coder.lee.fund.entity.TFundEntity;
-import com.coder.lee.fund.entity.elastic.EFundArchivesStockEntity;
-import com.coder.lee.fund.entity.elastic.EFundEntity;
-import com.coder.lee.fund.service.TFundArchivesStockEntityService;
-import com.coder.lee.fund.service.TFundEntityService;
-import com.coder.lee.fund.service.elastic.EFundArchivesStockEntityService;
-import com.coder.lee.fund.service.elastic.EFundEntityService;
+import com.coder.lee.fund.service.TFundArchivesStockService;
+import com.coder.lee.fund.service.TFundService;
 import com.jayway.jsonpath.JsonPath;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -32,8 +27,8 @@ import java.util.stream.Collectors;
  *
  * @author coderLee23
  */
-@Order(1000)
-@Component
+//@Order(1000)
+//@Component
 public class FundRankingSpider implements CommandLineRunner {
 
     private static final String RANK_HANDLER_URL = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2020-02-09&ed=2021-04-29&qdii=&tabSubtype=,,,,,&pi=1&pn=10000&dx=1&v=0.69104189822889";
@@ -45,10 +40,10 @@ public class FundRankingSpider implements CommandLineRunner {
 
 
     @Autowired
-    private TFundArchivesStockEntityService tFundArchivesStockEntityService;
+    private TFundArchivesStockService tFundArchivesStockService;
 
     @Autowired
-    private TFundEntityService tFundEntityService;
+    private TFundService tFundService;
 
 //    @Autowired
 //    private EFundArchivesStockEntityService eFundArchivesStockEntityService;
@@ -68,7 +63,7 @@ public class FundRankingSpider implements CommandLineRunner {
             List<String> datas = JsonPath.read(body, "$.datas");
             for (String data : datas) {
                 String fundCode = data.split(",")[0];
-                TFundEntity tFundEntity = tFundEntityService.findByFundCode(fundCode);
+                TFundEntity tFundEntity = tFundService.findByFundCode(fundCode);
                 if (tFundEntity != null) {
                     continue;
                 }
@@ -102,7 +97,7 @@ public class FundRankingSpider implements CommandLineRunner {
         tFundEntity.setThisYear(thisYear);
         tFundEntity.setEstablishment(establishment);
 
-        tFundEntityService.saveFund(tFundEntity);
+        tFundService.saveFund(tFundEntity);
         // 保存到es中
 //        EFundEntity eFundEntity = new EFundEntity();
 //        BeanUtils.copyProperties(tFundEntity, eFundEntity);
@@ -183,7 +178,7 @@ public class FundRankingSpider implements CommandLineRunner {
 
         }).collect(Collectors.toList());
 
-        tFundArchivesStockEntityService.saveFundArchivesStockList(tFundArchivesStockEntityList);
+        tFundArchivesStockService.saveFundArchivesStockList(tFundArchivesStockEntityList);
 //        List<EFundArchivesStockEntity> eFundArchivesStockEntityList = tFundArchivesStockEntityList.stream().map(tFundArchivesStockEntity -> {
 //            EFundArchivesStockEntity eFundArchivesStockEntity = new EFundArchivesStockEntity();
 //            BeanUtils.copyProperties(tFundArchivesStockEntity, eFundArchivesStockEntity);
