@@ -164,3 +164,27 @@ ORDER BY
 	research_count DESC LIMIT 30;
 
 ```
+
+```postgresql
+-- 机构调研和股东人数配合选股
+SELECT
+	r.s_code,
+	r.s_name,
+	SUM ( r.org_sum ) org_total,
+	COUNT ( * ) research_count,
+	( SELECT h.holder_num_change_rate FROM t_holder_num_latest h WHERE h.security_code = r.s_code ) holder_num_change_rate,
+	( SELECT h.range_change_rate FROM t_holder_num_latest h WHERE h.security_code = r.s_code ) range_change_rate 
+FROM
+	t_institution_research r 
+WHERE
+	r.start_date BETWEEN '2021-03-31' 
+	AND '2021-05-01' 
+	AND r.s_code NOT LIKE'68%' 
+GROUP BY
+	r.s_code,
+	r.s_name 
+ORDER BY
+	org_total DESC,
+	research_count DESC 
+	LIMIT 30;
+```
