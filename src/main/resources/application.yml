@@ -1,0 +1,9 @@
+management:
+  port: 54001  // 指定监听端口，不指定则语server端口一直
+  health:
+    db:
+      enabled: true
+    mail:
+      enabled: true
+  security:
+    enabled: false // 指定访问信息不进行用户验证
