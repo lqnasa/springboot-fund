@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  *
  * @author coderLee23
  */
-//@Order(1000)
-//@Component
+@Order(1000)
+@Component
 public class FundRankingSpider implements CommandLineRunner {
 
     private static final String RANK_HANDLER_URL = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2020-02-09&ed=2021-04-29&qdii=&tabSubtype=,,,,,&pi=1&pn=10000&dx=1&v=0.69104189822889";
