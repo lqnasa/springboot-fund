@@ -103,7 +103,6 @@ public class THolderNumLatestSpider implements CommandLineRunner {
                 tHolderNumLatestEntity.setPreviousHolderNum(((Double) map.get("PreviousHolderNum")).intValue());
                 tHolderNumLatestEntity.setHolderNumChange(((Double) map.get("HolderNumChange")).intValue());
                 tHolderNumLatestEntity.setHolderNumChangeRate((Double) map.get("HolderNumChangeRate"));
-                System.out.println(map.get("RangeChangeRate"));
                 tHolderNumLatestEntity.setRangeChangeRate(Objects.isNull(map.get("RangeChangeRate")) || "-".equals(map.get("RangeChangeRate")) ? 0D : (Double) map.get("RangeChangeRate"));
                 String endDateStr = (String) map.get("EndDate");
                 String previousEndDateStr = (String) map.get("PreviousEndDate");
