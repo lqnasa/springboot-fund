@@ -121,7 +121,7 @@ public class THolderNumLatestSpider implements CommandLineRunner {
 
             hashOperations.put(HOLDER_NUM_LATEST_URL_DOWNLOAD, pageNoUrl, true);
         } catch (Exception e) {
-            LOGGER.error("获取InstitutionResearchList出错", e);
+            LOGGER.error("获取THolderNumLatestList出错", e);
         }
     }
 
