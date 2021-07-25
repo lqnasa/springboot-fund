@@ -28,13 +28,13 @@ import java.util.stream.Collectors;
  *
  * @author coderLee23
  */
-//@Order(1001)
-//@Component
+@Order(1001)
+@Component
 public class InstitutionResearchSpider implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InstitutionResearchSpider.class);
 
-    private static final String RESEARCH_URL = "http://datainterface3.eastmoney.com/EM_DataCenter_V3/api/JGDYHZ/GetJGDYMX?tkn=eastmoney&secuCode=&sortfield=3&sortdirec=1&pageNum=%s&pageSize=50&cfg=jgdyhz&p=%s&pageNo=%s&_=1619919179390";
+    private static final String RESEARCH_URL = "http://datainterface3.eastmoney.com/EM_DataCenter_V3/api/JGDYHZ/GetJGDYMX?tkn=eastmoney&secuCode=&sortfield=3&sortdirec=&pageNum=%s&pageSize=50&cfg=jgdyhz&p=%s&pageNo=%s&_=1619919179390";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36";
     private static final String REFERRER_URL = "http://data.eastmoney.com/";
 
@@ -50,8 +50,15 @@ public class InstitutionResearchSpider implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Integer totalPage = getTotalPage();
         LOGGER.info("total page :{}", totalPage);
-        for (int i = 0; i < totalPage; i++) {
-            saveInstitutionResearchList(i + 1);
+        for (int i = totalPage; i > 0; i--) {
+            String pageNoUrl = String.format(RESEARCH_URL, i, i, i);
+            LOGGER.info("pageNoUrl:{}", pageNoUrl);
+            Object object = hashOperations.get(INSTITUTION_RESEARCH_URL_DOWNLOAD, pageNoUrl);
+            if (Objects.nonNull(object)) {
+                LOGGER.info("pageNoUrl:{}已经爬取，增量爬取方式，认为后续的都已经爬过。", pageNoUrl);
+                return;
+            }
+            saveInstitutionResearchList(pageNoUrl);
             // 防止爬取太快，避免反爬等问题
             waitTime();
         }
@@ -73,15 +80,7 @@ public class InstitutionResearchSpider implements CommandLineRunner {
         return 0;
     }
 
-    private void saveInstitutionResearchList(int pageNo) {
-        String pageNoUrl = String.format(RESEARCH_URL, pageNo, pageNo, pageNo);
-        LOGGER.info("pageNoUrl:{}", pageNoUrl);
-        Object object = hashOperations.get(INSTITUTION_RESEARCH_URL_DOWNLOAD, pageNoUrl);
-        if (Objects.nonNull(object)) {
-            LOGGER.info("pageNoUrl:{}已经爬取", pageNoUrl);
-            return;
-        }
-
+    private void saveInstitutionResearchList(String pageNoUrl) {
         try {
             Connection.Response response = Jsoup.connect(pageNoUrl).ignoreContentType(true).followRedirects(true).referrer(REFERRER_URL)
                     .userAgent(USER_AGENT)
@@ -109,7 +108,7 @@ public class InstitutionResearchSpider implements CommandLineRunner {
 
     private void waitTime() {
         Random random = new Random(47);
-        long sleepTime = random.nextInt(1000) + 1000L;
+        long sleepTime = random.nextInt(1000) + 500L;
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {

@@ -15,9 +15,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Description: Function Description
@@ -31,7 +33,8 @@ import java.util.stream.Collectors;
 //@Component
 public class FundRankingSpider implements CommandLineRunner {
 
-    private static final String RANK_HANDLER_URL = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2020-02-09&ed=2021-04-29&qdii=&tabSubtype=,,,,,&pi=1&pn=10000&dx=1&v=0.69104189822889";
+    private static final String GP_RANK_HANDLER_URL = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2020-06-30&ed=2021-06-30&qdii=&tabSubtype=,,,,,&pi=1&pn=10000&dx=1&v=0.69104189822889";
+    private static final String HH_RANK_HANDLER_URL = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=hh&rs=&gs=0&sc=6yzf&st=desc&sd=2020-06-30&ed=2021-06-30&qdii=&tabSubtype=,,,,,&pi=1&pn=10000&dx=1&v=0.69104189822889";
     private static final String FUND_RANKING_URL = "http://fund.eastmoney.com/data/fundranking.html";
     private static final String FUND_YEARS_URL = "http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=%s&topline=10&year=&month=&rt=0.16801913405800972";
     private static final String FUND_F20_URL = "http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=%s&topline=20&year=%s&month=&rt=0.20032375982039508";
@@ -54,8 +57,12 @@ public class FundRankingSpider implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Stream.of(GP_RANK_HANDLER_URL, HH_RANK_HANDLER_URL).forEach(this::getFundByType);
+    }
+
+    private void getFundByType(String fundUrl) {
         try {
-            Connection.Response response = Jsoup.connect(RANK_HANDLER_URL).ignoreContentType(true).followRedirects(true).referrer(FUND_RANKING_URL)
+            Connection.Response response = Jsoup.connect(fundUrl).ignoreContentType(true).followRedirects(true).referrer(FUND_RANKING_URL)
                     .userAgent(USER_AGENT)
                     .execute();
             String body = response.body();

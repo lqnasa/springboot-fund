@@ -72,6 +72,61 @@ GROUP BY
 ORDER BY
 	t.stock_code,
 	t.up_until_date DESC;
+
+
+SELECT T
+	.stock_name,
+	T.stock_code,
+	T.up_until_date,
+	COUNT ( * ) total,
+	SUM ( T.hold_money ) money（万）,
+	( SELECT SUM ( t1.hold_money ) FROM t_fund_archives_stock t1 WHERE t1.stock_code = T.stock_code AND t1.up_until_date = '2021-03-31' ) / ( SELECT SUM ( t2.hold_money ) FROM t_fund_archives_stock t2 WHERE t2.stock_code = T.stock_code AND t2.up_until_date = '2020-12-31' ) ratio 
+FROM
+	t_fund_archives_stock T 
+WHERE
+	T.stock_code IN (
+SELECT DISTINCT
+	t11.stock_code 
+FROM
+	(
+SELECT
+	t1.stock_code,
+	SUM ( t1.hold_money ) money 
+FROM
+	t_fund_archives_stock t1 
+WHERE
+	t1.up_until_date = '2021-03-31' 
+GROUP BY
+	t1.stock_code 
+	) t11,
+	(
+SELECT
+	t2.stock_code,
+	SUM ( t2.hold_money ) money 
+FROM
+	t_fund_archives_stock t2 
+WHERE
+	t2.up_until_date = '2020-12-31' 
+GROUP BY
+	t2.stock_code 
+	) t22 
+WHERE
+	t11.stock_code = t22.stock_code 
+	AND t11.money > t22.money * 1.5 
+	AND t11.money > 10000 
+	AND t11.stock_code NOT LIKE'68%' 
+	AND LENGTH ( t11.stock_code ) > 5 
+	) 
+	AND T.up_until_date IN ( '2020-12-31', '2021-03-31' ) 
+GROUP BY
+	T.up_until_date,
+	T.stock_code,
+	T.stock_name 
+ORDER BY
+	ratio DESC,
+	T.stock_code,
+	T.up_until_date DESC;
+
 ```
 
 ```postgresql
@@ -142,7 +197,24 @@ HAVING
 	sum( t1.net_worth_ratio ) > 55 
 	)
 ```
+```postgresql
+-- 删除重复数据
+DELETE 
+FROM
+	t_holder_num_latest 
+WHERE
+	ID IN (
+SELECT MAX
+	( ID ) 
+FROM
+	t_holder_num_latest 
+WHERE
+	security_code IN ( SELECT security_code FROM t_holder_num_latest GROUP BY security_code HAVING COUNT ( * ) > 1 ) 
+GROUP BY
+	security_code 
+	);
 
+```
 ```postgresql
 -- 统计机构调用的次数，机构总数，按机构总数和调用次数排序
 

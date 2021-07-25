@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  *
  * @author coderLee23
  */
-@Order(1002)
-@Component
+//@Order(1002)
+//@Component
 public class THolderNumLatestSpider implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(THolderNumLatestSpider.class);
